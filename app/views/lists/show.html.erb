@@ -1,14 +1,33 @@
 <h2><%= @list.name %></h2>
 
-<%= simple_form_for @list, @bookmark do |f| %>
+<!-- Formulaire d'ajout de bookmark -->
+<h3>Add a Bookmark</h3>
+<%= simple_form_for [@list, @bookmark] do |f| %>
   <%= f.input :comment %>
-  <%= f.label :comment %>
-  <%= f.input :movie_id %>
-  <%= f.label :movie_id %>
-  <%= f.button :submit %>
+  <%= f.label :movie_id, "Choose a Movie" %>
+  <%= f.input :movie_id, collection: Movie.all, label_method: :title, value_method: :id, prompt: "Select a Movie" %>
+  <%= f.button :submit, "Add Bookmark" %>
 <% end %>
 
-<%= link_to "Back to lists", lists_path %>
-<br>
-<br>
-<%= link_to "Add a new list", new_list_path %>
+<!-- Message de succès/erreur -->
+<% if notice %>
+  <p class="notice"><%= notice %></p>
+<% elsif alert %>
+  <p class="alert"><%= alert %></p>
+<% end %>
+
+<!-- Section d'affichage des bookmarks -->
+<h3>Bookmarks</h3>
+<% if @list.bookmarks.any? %>
+  <% @list.bookmarks.each do |bookmark| %>
+  <li>
+    <strong>Movie:</strong> <%= bookmark.movie.title %><br>
+    <strong>Comment:</strong> <%= bookmark.comment %>
+    <%= link_to "Delete", list_bookmark_path(@list, bookmark), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+  </li>
+<% end %>
+<% else %>
+  <p>No bookmarks yet.</p>
+
+<% end %>
+
