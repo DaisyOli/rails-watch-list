@@ -1,8 +1,20 @@
-<%= form_with model: @list do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.submit %>
-<% end %>
-<br>
-<br>
-<%= link_to("Back to lists", lists_path) %>
+<div class="text-center mt-5">
+  <!-- Title -->
+  <h2 class="mb-4" style="color: #4b0082;">Add a New List</h2>
+  
+  <!-- Form inside a card -->
+  <div class="card mx-auto mb-4" style="max-width: 600px; background-color: #e6e6fa; color: #4b0082;">
+    <div class="card-body">
+      <%= form_with model: @list, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :name, "List Name", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+        <%= f.submit "Create List", class: "btn btn-dark", style: "background-color: #4b0082; border-color: #4b0082;" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Back to lists link -->
+  <%= link_to "Back to lists", lists_path, class: "btn btn-outline-secondary custom-hover" %>
+</div>

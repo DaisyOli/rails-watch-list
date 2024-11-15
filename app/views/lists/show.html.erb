@@ -1,33 +1,61 @@
-<h2><%= @list.name %></h2>
+<div class="text-center mt-5 show-page">
+  <!-- Nom de la liste -->
+  <div class="card mx-auto mb-4" style="max-width: 600px; background-color: #e6e6fa; color: #4b0082;">
+    <div class="card-body">
+      <h1 class="card-title mb-4" style="color: #4b0082;"><%= @list.name %></h1>
+    </div>
+  </div>
 
-<!-- Formulaire d'ajout de bookmark -->
-<h3>Add a Bookmark</h3>
-<%= simple_form_for [@list, @bookmark] do |f| %>
-  <%= f.input :comment %>
-  <%= f.label :movie_id, "Choose a Movie" %>
-  <%= f.input :movie_id, collection: Movie.all, label_method: :title, value_method: :id, prompt: "Select a Movie" %>
-  <%= f.button :submit, "Add Bookmark" %>
-<% end %>
+  <!-- Formulaire d'ajout de bookmark -->
+  <div class="card mx-auto mb-4 add-bookmark-card" style="max-width: 600px; background-color: #e6e6fa; color: #4b0082;">
+    <div class="card-body">
+      <h3 class="card-title mb-4" style="color: #4b0082;">Add a Bookmark</h3>
+      <%= simple_form_for [@list, @bookmark] do |f| %>
+        <div class="mb-3">
+          <%= f.input :comment, 
+                      label: "Comment", 
+                      input_html: { class: "form-control", placeholder: "Add your comment" } %>
+        </div>
+        <div class="mb-3">
+          <%= f.input :movie_id, 
+                      collection: Movie.all, 
+                      label: "Choose a Movie", 
+                      label_method: :title, 
+                      value_method: :id, 
+                      prompt: "Select a Movie", 
+                      input_html: { class: "form-control" } %>
+        </div>
+        <%= f.button :submit, "Add Bookmark", class: "btn btn-dark", style: "background-color: #4b0082; border-color: #4b0082;" %>
+      <% end %>
+    </div>
+  </div>
 
-<!-- Message de succès/erreur -->
-<% if notice %>
-  <p class="notice"><%= notice %></p>
-<% elsif alert %>
-  <p class="alert"><%= alert %></p>
-<% end %>
+  <!-- Message de succès/erreur -->
+  <% if notice %>
+    <p class="alert alert-success mx-auto" style="max-width: 600px; color: #4b0082;"><%= notice %></p>
+  <% elsif alert %>
+    <p class="alert alert-danger mx-auto" style="max-width: 600px; color: #4b0082;"><%= alert %></p>
+  <% end %>
 
-<!-- Section d'affichage des bookmarks -->
-<h3>Bookmarks</h3>
-<% if @list.bookmarks.any? %>
-  <% @list.bookmarks.each do |bookmark| %>
-  <li>
-    <strong>Movie:</strong> <%= bookmark.movie.title %><br>
-    <strong>Comment:</strong> <%= bookmark.comment %>
-    <%= link_to "Delete", list_bookmark_path(@list, bookmark), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-  </li>
-<% end %>
-<% else %>
-  <p>No bookmarks yet.</p>
-
-<% end %>
-
+  <!-- Section d'affichage des bookmarks -->
+  <div class="card mx-auto" style="max-width: 600px; background-color: #e6e6fa; color: #4b0082;">
+    <div class="card-body">
+      <h3 class="card-title mb-4" style="color: #4b0082;">Bookmarks</h3>
+      <% if @list.bookmarks.any? %>
+        <ol class="list-group list-group-numbered">
+          <% @list.bookmarks.each do |bookmark| %>
+            <li class="list-group-item" style="background-color: #e6e6fa; color: #4b0082;">
+              <strong>Movie:</strong> <%= bookmark.movie.title %><br>
+              <strong>Comment:</strong> <%= bookmark.comment %>
+              <%= link_to "Delete", list_bookmark_path(@list, bookmark), 
+                          class: "btn btn-danger btn-sm mt-2", 
+                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+            </li>
+          <% end %>
+        </ol>
+      <% else %>
+        <p>No bookmarks yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
